@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="login-box">
+    <h2>Verify OTP 🔐</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="otp" placeholder="Enter OTP" required>
+
+        <button type="submit" class="btn">Verify</button>
+    </form>
+</div>
+
+{% endblock %}

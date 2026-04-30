@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Canteen</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav>
+    <h2>🍽 Smart Canteen</h2>
+    <a href="/">Home</a>
+    <a href="/cart/">Cart</a>
+    <a href="/wishlist/">Wishlist</a>
+    <a href="/login/">Login</a>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+<div id="offerPopup" class="popup">
+    <div class="popup-content">
+        <span onclick="closePopup()" class="close">&times;</span>
+        <h2 id="offerText">🎁 Surprise!</h2>
+    </div>
+</div>
+
+<script>
+    const offers = [
+        "🎉 You got 20% OFF!",
+        "🍔 Free Burger on next order!",
+        "🥤 Free Drink unlocked!",
+        "💸 ₹50 OFF applied!"
+    ];
+
+    window.onload = function() {
+        if (Math.random() < 0.6) {  // 60% chance
+            let offer = offers[Math.floor(Math.random() * offers.length)];
+            document.getElementById("offerText").innerText = offer;
+
+            setTimeout(() => {
+                document.getElementById("offerPopup").style.display = "flex";
+            }, 1000);
+        }
+    }
+
+    function closePopup() {
+        document.getElementById("offerPopup").style.display = "none";
+    }
+</script>
+
+</body>
+</html>

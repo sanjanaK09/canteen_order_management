@@ -1,0 +1,34 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<h2>Your Cart 🛒</h2>
+
+<div class="cart-container">
+
+{% for item in items %}
+<div class="cart-item">
+
+    <h3>{{ item.name }}</h3>
+    <p>₹{{ item.price }}</p>
+
+    <div class="qty-box">
+        <a href="/decrease/{{ item.id }}/">➖</a>
+        <span>{{ item.qty }}</span>
+        <a href="/increase/{{ item.id }}/">➕</a>
+    </div>
+
+    <p>Total: ₹{{ item.total }}</p>
+
+    <a href="/remove/{{ item.id }}/" class="remove-btn">Remove</a>
+
+</div>
+{% endfor %}
+
+</div>
+
+<div class="cart-summary">
+    <h3>Total: ₹{{ total }}</h3>
+    <a href="/checkout/" class="btn checkout">Proceed to Checkout</a>
+</div>
+
+{% endblock %}

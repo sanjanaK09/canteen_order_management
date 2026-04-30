@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Success</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff6f61, #ff9472);
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        .card {
+            background: #fff;
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            color: #ff6f61;
+            font-size: 32px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .amount {
+            font-size: 26px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #ff6f61;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #e65a50;
+        }
+
+        /* 🎉 Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* 🎊 Confetti effect (simple) */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: yellow;
+            top: 0;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {transform: translateY(0);}
+            100% {transform: translateY(100vh);}
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 🎉 CONFETTI -->
+    <script>
+        for (let i = 0; i < 50; i++) {
+            let div = document.createElement("div");
+            div.classList.add("confetti");
+            div.style.left = Math.random() * 100 + "vw";
+            div.style.backgroundColor = ["#f39c12", "#2ecc71", "#3498db", "#e74c3c"][Math.floor(Math.random()*4)];
+            div.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(div);
+        }
+    </script>
+
+    <div class="container">
+        <div class="card">
+            <h1>🎉 Order Confirmed!</h1>
+
+            <p>Your order has been placed successfully.</p>
+
+            <p class="amount">Total Paid: ₹{{ total }}</p>
+
+            <p>🍽️ Your food will be prepared soon</p>
+            <p>⏰ Please collect at your selected time slot</p>
+
+            <a href="/" class="btn">⬅ Back to Menu</a>
+        </div>
+    </div>
+
+</body>
+</html>

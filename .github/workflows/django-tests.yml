@@ -1,0 +1,78 @@
+name: Django Tests & Security
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+
+    services:
+      sqlite:
+        image: sqlite
+        options: >-
+          --health-cmd "sqlite3 :memory: 'SELECT 1'"
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coverage django-stubs
+
+    - name: Run Django System Checks
+      run: |
+        python manage.py check
+      env:
+        DJANGO_SETTINGS_MODULE: canteen_project.settings
+        DEBUG: False
+        SECRET_KEY: test-secret-key-for-ci
+
+    - name: Run migrations
+      run: |
+        python manage.py migrate
+      env:
+        DJANGO_SETTINGS_MODULE: canteen_project.settings
+        DEBUG: False
+        SECRET_KEY: test-secret-key-for-ci
+
+    - name: Run Django Tests
+      run: |
+        coverage run --source='app' manage.py test
+      env:
+        DJANGO_SETTINGS_MODULE: canteen_project.settings
+        DEBUG: False
+        SECRET_KEY: test-secret-key-for-ci
+
+    - name: Generate Coverage Report
+      run: |
+        coverage report
+        coverage xml
+
+    - name: Upload Coverage Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report-${{ matrix.python-version }}
+        path: coverage.xml
+
+    - name: Django Security Check
+      run: |
+        python manage.py check --deploy
+      continue-on-error: true
+      env:
+        DJANGO_SETTINGS_MODULE: canteen_project.settings
+        DEBUG: False
+        SECRET_KEY: test-secret-key-for-ci
